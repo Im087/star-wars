@@ -11,11 +11,11 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item class="header-nav-item">
-            <nuxt-link to="/characters" active-class="header-active">Characters</nuxt-link>
+          <b-nav-item class="header-nav-item" to="/characters" active-class="header-active">
+            Characters
           </b-nav-item>
-          <b-nav-item class="header-nav-item">
-            <nuxt-link to="/person" active-class="header-active">Person</nuxt-link>
+          <b-nav-item class="header-nav-item" to="/person" active-class="header-active">
+            Person
           </b-nav-item>
         </b-navbar-nav>
 

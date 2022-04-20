@@ -1,7 +1,7 @@
 <template>
   <div class="layout-container d-flex flex-column justify-content-between">
     <Header />
-    <Nuxt class="content-container" />
+    <Nuxt class="flex-fill" keep-alive />
     <Footer />
   </div>
 </template>
@@ -22,9 +22,5 @@ export default {
 <style lang="scss" scoped>
 .layout-container {
   height: 100%;
-
-  .content-container {
-    flex: 1 1 auto;
-  }
 }
 </style>

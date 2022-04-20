@@ -9,8 +9,8 @@
                 <b-card :title="item.name">
                   <div class="d-flex justify-content-between flex-wrap">
                     <b-card-text>Birth year: {{item.birthYear}}</b-card-text>
-                    <b-card-text>Height: {{item.height}} cm</b-card-text>
-                    <b-card-text>Mass: {{item.mass}} kg</b-card-text>
+                    <b-card-text>Height: {{item.height || '?'}} cm</b-card-text>
+                    <b-card-text>Mass: {{item.mass || '?'}} kg</b-card-text>
                   </div>
                 </b-card>
               </nuxt-link>
