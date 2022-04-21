@@ -11,10 +11,10 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item class="header-nav-item" to="/characters" active-class="header-active">
+          <b-nav-item class="header-nav-item" to="/characters" active-class="active">
             Characters
           </b-nav-item>
-          <b-nav-item class="header-nav-item" to="/person" active-class="header-active">
+          <b-nav-item class="header-nav-item" to="/person" active-class="active">
             Person
           </b-nav-item>
         </b-navbar-nav>
@@ -22,8 +22,7 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <b-nav-form>
-            <b-form-input size="sm" class="mr-sm-2" placeholder="Search"></b-form-input>
-            <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
+            <b-form-input size="sm" class="header-filter mr-sm-2" placeholder="Filter by name" @input="setKeyword"></b-form-input>
           </b-nav-form>
         </b-navbar-nav>
       </b-collapse>
@@ -33,6 +32,11 @@
 
 <script>
 export default {
+  methods: {
+    setKeyword(value) {
+      this.$nuxt.$store.dispatch('keyword/setKeyword', value);
+    }
+  }
 
 }
 </script>
@@ -45,6 +49,27 @@ export default {
     img {
       height: 27px;
     }
+  }
+
+  .header-nav-item {
+
+    a {
+      color: #FFFFFF;
+
+      &.active {
+        color:#eeb400;
+        font-weight: bold;
+      }
+
+      &:hover {
+        color:#eeb400;
+      }
+    }
+    
+  }
+
+  .header-filter {
+    color: #eeb400;
   }
 }
 </style>

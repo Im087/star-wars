@@ -30,22 +30,39 @@ export default {
   data() {
     return {
       characters: [],
+      filteredCharacters: [],
       perPage: 10,
       currentPage: 1
     }
   },
   computed: {
     rows() {
-      return this.characters.length;
+      if(this.keyword) {
+        return this.filteredCharacters.length;
+      } else {
+        return this.characters.length;
+      }
     },
     currentCharacters() {
-      return this.characters.slice((this.currentPage - 1) * this.perPage, this.currentPage * this.perPage);
+      if(this.keyword) {
+        console.log('filter');
+        this.filteredCharacters = this.characters.filter(el => {
+          return el.name.toLowerCase().includes(this.keyword.toLowerCase());
+        })
+
+        return this.filteredCharacters.slice((this.currentPage - 1) * this.perPage, this.currentPage * this.perPage);
+      } else {
+        console.log('no filter');
+        return this.characters.slice((this.currentPage - 1) * this.perPage, this.currentPage * this.perPage);
+      }
+    },
+    keyword() {
+      return this.$nuxt.$store.getters['keyword/getKeyword'];
     }
   },
   async created() {
-    let data = await this.$axios.$get('/?query={allPeople{edges{node{id}}}}');
-    let arr = data.data.allPeople.edges;
-    arr.forEach(el => {
+    let allPeopleData = await this.$axios.$get('/?query={allPeople{edges{node{id}}}}');
+    allPeopleData.data.allPeople.edges.forEach(el => {
       this.$axios.$get(`/?query={person(id:"${el.node.id}"){id name height mass hairColor skinColor eyeColor birthYear gender homeworld { id } species { id } vehicleConnection { edges { node { id } } } starshipConnection { edges { node { id } } } filmConnection { edges { node { id } } } } }`).then(data => {
         this.characters.push(data.data.person);
       }).catch(err => {
