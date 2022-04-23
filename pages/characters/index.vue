@@ -45,14 +45,12 @@ export default {
     },
     currentCharacters() {
       if(this.keyword) {
-        console.log('filter');
         this.filteredCharacters = this.characters.filter(el => {
           return el.name.toLowerCase().includes(this.keyword.toLowerCase());
         })
 
         return this.filteredCharacters.slice((this.currentPage - 1) * this.perPage, this.currentPage * this.perPage);
       } else {
-        console.log('no filter');
         return this.characters.slice((this.currentPage - 1) * this.perPage, this.currentPage * this.perPage);
       }
     },
@@ -69,7 +67,6 @@ export default {
         console.log(err);
       })
     });
-    console.log(this.characters);
   }
 
 }

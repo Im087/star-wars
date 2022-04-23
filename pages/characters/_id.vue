@@ -49,11 +49,13 @@ export default {
       films: []
     }
   },
+  async middleware({$axios, params, route, store}) {
+    let characterData = await $axios.$get(`/?query={person(id:"${params.id}"){name}}`);
+    store.dispatch('recentLinks/setRecentLinks', {path: route.path, name: characterData.data.person.name});
+  },
   async created() {
-    console.log(this.$route.params.id);
     let characterData = await this.$axios.$get(`/?query={person(id:"${this.$route.params.id}"){id name height mass hairColor skinColor eyeColor birthYear gender homeworld { id } species { id } vehicleConnection { edges { node { id } } } starshipConnection { edges { node { id } } } filmConnection { edges { node { id } } } } }`)
     this.character = characterData.data.person;
-    console.log(this.character);
 
     if(this.character.homeworld) {
       let planetData = await this.$axios.$get(`/?query={planet(id:"${this.character.homeworld.id}"){name}}`);

@@ -11,15 +11,13 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item class="header-nav-item" to="/characters" active-class="active">
+          <b-nav-item class="header-nav-item" to="/characters" exact-active-class="active">
             Characters
           </b-nav-item>
-          <b-nav-item class="header-nav-item" to="/person" active-class="active">
-            Person
+          <b-nav-item class="header-nav-item" :to="item.path" exact-active-class="active" v-for="item in recentLinks" :key="item.path">
+            {{item.name}}
           </b-nav-item>
         </b-navbar-nav>
-
-        <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <b-nav-form>
             <b-form-input size="sm" class="header-filter mr-sm-2" placeholder="Filter by name" @input="setKeyword"></b-form-input>
@@ -32,6 +30,11 @@
 
 <script>
 export default {
+  computed: {
+    recentLinks() {
+      return this.$nuxt.$store.getters['recentLinks/getRecentLinks'];
+    }
+  },
   methods: {
     setKeyword(value) {
       this.$nuxt.$store.dispatch('keyword/setKeyword', value);
