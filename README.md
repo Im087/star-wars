@@ -2,7 +2,9 @@
 
 ## IMPORTANT
 This project uses the API https://github.com/graphql/swapi-graphql
+
 Follow the instructions to run it. Copy the localhost url to the field `axios: {baseURL}` in the file `./nuxt.config.js`
+
 When the configuration is done, do the following steps to run this project
 
 ## Build Setup
