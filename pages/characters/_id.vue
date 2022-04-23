@@ -53,47 +53,41 @@ export default {
     let characterData = await $axios.$get(`/?query={person(id:"${params.id}"){name}}`);
     store.dispatch('recentLinks/setRecentLinks', {path: route.path, name: characterData.data.person.name});
   },
-  async created() {
-    let characterData = await this.$axios.$get(`/?query={person(id:"${this.$route.params.id}"){id name height mass hairColor skinColor eyeColor birthYear gender homeworld { id } species { id } vehicleConnection { edges { node { id } } } starshipConnection { edges { node { id } } } filmConnection { edges { node { id } } } } }`)
-    this.character = characterData.data.person;
-
-    if(this.character.homeworld) {
-      let planetData = await this.$axios.$get(`/?query={planet(id:"${this.character.homeworld.id}"){name}}`);
-      this.planet = planetData.data.planet;
-    }
-    
-    if(this.character.species) {
-      let speciesData = await this.$axios.$get(`/?query={species(id:"${this.character.species.id}"){name}}`);
-      this.species = speciesData.data.species;
-    }
-    
-    this.character.vehicleConnection.edges.forEach(el => {
-      this.$axios.$get(`/?query={vehicle(id:"${el.node.id}"){id name}}`).then(data => {
-        this.vehicles.push(data.data.vehicle);
-      }).catch(err => {
-        console.log(err);
-      })
-    })
-
-    this.character.starshipConnection.edges.forEach(el => {
-      this.$axios.$get(`/?query={starship(id:"${el.node.id}"){id name}}`).then(data => {
-        this.starships.push(data.data.starship);
-      }).catch(err => {
-        console.log(err);
-      })
-    })
-
-    this.character.filmConnection.edges.forEach(el => {
-      this.$axios.$get(`/?query={film(id:"${el.node.id}"){id title}}`).then(data => {
-        this.films.push(data.data.film);
-      }).catch(err => {
-        console.log(err);
-      })
-    })
+  created() {
+    this.getDataFromGraphQL();
   },
   methods: {
     goPrevious() {
       this.$router.go(-1);
+    },
+    async getDataFromGraphQL() {
+      let characterData = await this.$axios.$get(`/?query={person(id:"${this.$route.params.id}"){id name height mass hairColor skinColor eyeColor birthYear gender homeworld { id } species { id } vehicleConnection { edges { node { id } } } starshipConnection { edges { node { id } } } filmConnection { edges { node { id } } } } }`)
+      this.character = characterData.data.person;
+
+      if(this.character.homeworld) {
+        let planetData = await this.$axios.$get(`/?query={planet(id:"${this.character.homeworld.id}"){name}}`);
+        this.planet = planetData.data.planet;
+      }
+      
+      if(this.character.species) {
+        let speciesData = await this.$axios.$get(`/?query={species(id:"${this.character.species.id}"){name}}`);
+        this.species = speciesData.data.species;
+      }
+      
+      this.character.vehicleConnection.edges.forEach(async (el) => {
+        let vehicleData = await this.$axios.$get(`/?query={vehicle(id:"${el.node.id}"){id name}}`);
+        this.vehicles.push(vehicleData.data.vehicle);
+      })
+
+      this.character.starshipConnection.edges.forEach(async (el) => {
+        let starshipData = await this.$axios.$get(`/?query={starship(id:"${el.node.id}"){id name}}`);
+        this.starships.push(starshipData.data.starship);
+      })
+
+      this.character.filmConnection.edges.forEach(async (el) => {
+        let filmData = await this.$axios.$get(`/?query={film(id:"${el.node.id}"){id title}}`);
+        this.films.push(filmData.data.film);
+      })
     }
   }
 

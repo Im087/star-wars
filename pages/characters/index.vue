@@ -58,15 +58,17 @@ export default {
       return this.$nuxt.$store.getters['keyword/getKeyword'];
     }
   },
-  async created() {
-    let allPeopleData = await this.$axios.$get('/?query={allPeople{edges{node{id}}}}');
-    allPeopleData.data.allPeople.edges.forEach(el => {
-      this.$axios.$get(`/?query={person(id:"${el.node.id}"){id name height mass hairColor skinColor eyeColor birthYear gender homeworld { id } species { id } vehicleConnection { edges { node { id } } } starshipConnection { edges { node { id } } } filmConnection { edges { node { id } } } } }`).then(data => {
-        this.characters.push(data.data.person);
-      }).catch(err => {
-        console.log(err);
-      })
-    });
+  created() {
+    this.getDataFromGrapgQL();
+  },
+  methods: {
+    async getDataFromGrapgQL() {
+      let allPeopleData = await this.$axios.$get('/?query={allPeople{edges{node{id}}}}');
+      allPeopleData.data.allPeople.edges.forEach(async (el) => {
+        let characterData = await this.$axios.$get(`/?query={person(id:"${el.node.id}"){id name height mass hairColor skinColor eyeColor birthYear gender homeworld { id } species { id } vehicleConnection { edges { node { id } } } starshipConnection { edges { node { id } } } filmConnection { edges { node { id } } } } }`);
+        this.characters.push(characterData.data.person);
+      });
+    }
   }
 
 }
