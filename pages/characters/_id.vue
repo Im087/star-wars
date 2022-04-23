@@ -1,7 +1,7 @@
 <template>
   <div class="character-container d-flex flex-column">
-    <b-container class="character-box flex-fill d-flex flex-column justify-content-between my-5 py-3">
-      <div class="character-info">
+    <b-container class="character-box flex-fill d-flex flex-column justify-content-between my-5">
+      <div class="character-info p-3">
         <h1 class="character-name">{{this.character.name}}</h1>
         <ul class="character-detail">
           <li><span class="character-detail-key">Birth year:</span> {{this.character.birthYear}}</li>
@@ -98,10 +98,10 @@ export default {
 .character-container {
 
   .character-box {
-    border: 1px solid #eeb400;
-    border-radius: 0.5rem;
 
     .character-info {
+      border: 1px solid #eeb400;
+      border-radius: 0.5rem;
 
       .character-name {
         color: #eeb400;
